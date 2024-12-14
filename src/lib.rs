@@ -7,6 +7,10 @@
 //! * A stored value can be taken out exactly once
 //! * All operations are thread-safe
 //!
+//! This is similar to [`std::sync::OnceLock`], but with different semantics regarding
+//! value consumption. `TakeOnce` allows the stored value to be taken out (moved) exactly once,
+//! whereas `OnceLock` allows the value to be accessed in place multiple times.
+//!
 //! # Example
 //!
 #![cfg_attr(feature = "_shuttle", doc = "```ignore")]
@@ -72,7 +76,7 @@ pub(crate) use std::sync::{
 ///
 /// * A value needs to be initialized lazily but only once
 /// * The initialized value should be consumable (moved out) rather than just accessible.
-///   See [`std::sync::OnceLock`] for a similar use case where the value is accessed in place.
+///   See [`std::sync::OnceLock`] for a similar use case where the value can be accessed in place.
 /// * Multiple threads might attempt to initialize or consume the value, but only one should succeed
 ///
 /// # Thread Safety
