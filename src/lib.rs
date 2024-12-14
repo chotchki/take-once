@@ -128,6 +128,7 @@ pub(crate) use std::sync::{
 ///     })
 ///     .collect();
 /// ```
+#[derive(Debug)]
 pub struct TakeOnce<T> {
     once: Once,
     // Whether or not the value is initialized is tracked by `once.is_completed()`.
