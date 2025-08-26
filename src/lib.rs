@@ -152,9 +152,11 @@ impl<T> TakeOnce<T> {
     ///
     #[cfg_attr(feature = "_shuttle", doc = "```ignore")]
     #[cfg_attr(not(feature = "_shuttle"), doc = "```rust")]
+    /// use take_once::TakeOnce;
+    ///
     /// let initialized = TakeOnce::new_with(true);
-    /// assert!(initialized.store(false), Err(false));
-    /// assert!(initialized.take(), Some(true));
+    /// assert_eq!(initialized.store(false), Err(false));
+    /// assert_eq!(initialized.take(), Some(true));
     /// ```
     #[must_use]
     pub fn new_with(val: T) -> TakeOnce<T> {
