@@ -1,15 +1,15 @@
 [package]
 name = "take-once"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 repository = "https://github.com/AmitPr/take-once"
 description = "A thread-safe container for one-time storage and one-time consumption of a value."
 license = "MIT"
 
 
-[dependencies]
-shuttle = { version = "0.8.1", optional = true }
+[dev-dependencies]
+shuttle = { version = "0.8.1" }
 
 
 [features]
-_shuttle = ["dep:shuttle"]
+_shuttle = []

@@ -237,11 +237,14 @@ unsafe impl<T: Send> Send for TakeOnce<T> {}
 // SAFETY: `TakeOnce` does not allow shared access to the inner value.
 unsafe impl<T: Send> Sync for TakeOnce<T> {}
 
-#[cfg(all(test, feature = "_shuttle"))]
+// #[cfg(all(test, feature = "_shuttle"))]
+#[cfg(test)]
 mod tests {
     use super::TakeOnce;
     use shuttle::sync::Arc;
     use shuttle::thread;
+
+    const SHUTTLE_ITERS: usize = 10_000;
 
     #[test]
     fn concurrent_store_operations() {
@@ -266,7 +269,7 @@ mod tests {
                     num_threads - 1
                 );
             },
-            100,
+            SHUTTLE_ITERS,
         );
     }
 
@@ -296,7 +299,7 @@ mod tests {
                 // All other takes should return None
                 assert_eq!(results.iter().filter(|r| r.is_none()).count(), 2);
             },
-            100,
+            SHUTTLE_ITERS,
         );
     }
 
@@ -329,7 +332,7 @@ mod tests {
                 // At least one operation should succeed
                 assert!(results.iter().any(|r| r.is_ok()));
             },
-            100,
+            SHUTTLE_ITERS,
         );
     }
 
@@ -350,7 +353,7 @@ mod tests {
                 let completed_after_store = t1.join().unwrap();
                 assert!(completed_after_store);
             },
-            100,
+            SHUTTLE_ITERS,
         );
     }
 
@@ -388,7 +391,7 @@ mod tests {
                 t2.join().unwrap();
                 t3.join().unwrap();
             },
-            100,
+            SHUTTLE_ITERS,
         );
     }
 
@@ -427,7 +430,7 @@ mod tests {
 
                 assert!(DROPPED.is_completed());
             },
-            100,
+            SHUTTLE_ITERS,
         );
     }
 }
