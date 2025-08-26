@@ -154,9 +154,6 @@ impl<T> TakeOnce<T> {
         let cell = TakeOnce::new();
         cell.store(val)
             .unwrap_or_else(|_| panic!("Storage failed inside create_and_store"));
-        if !cell.once.is_completed() {
-            panic!("Once is still running");
-        }
         cell
     }
 
