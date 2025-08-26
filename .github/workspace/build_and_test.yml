@@ -1,0 +1,31 @@
+name: Build and Test
+on: push
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["macos-latest", "ubuntu-latest", "windows-latest"]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v5
+      - name: Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Check Format
+        run: cargo fmt --all -- --check
+      - name: Build the library
+        run: cargo build --locked
+      - name: Run standard test suite
+        run: cargo test
+      - name: Run tests under shuttle
+        run: cargo test --features "_shuttle" --lib
